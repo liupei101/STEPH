@@ -37,6 +37,10 @@ Use the following command to load an experiment configuration and train STEPH (5
 python3 main.py --config config/cfg_temp_steph.yaml --handler SATA --multi_run --cfg_dataset_name tcga_brca
 ```
 
+For 5-fold data splits (placed at `./data_split/stratified-5foldcv`), please download them from [`UNI2-h-DSS`](https://huggingface.co/datasets/yuukilp/UNI2-h-DSS).
+
+For base ABMIL survival models (fitted on cancer-specific WSI datasets), please download them from [here](https://drive.google.com/drive/folders/1KmChNZW4xg-hSLVPYZe8GVeP75Xb-7lm?usp=sharing).
+
 ## Training logs and model checkpoints
 
 We advocate open-source research. Our full training logs can be accessed at [Google Drive](https://drive.google.com/drive/folders/1uAqF_WVz7CkU2nFbRMJR1zWS-fY3bih7?usp=sharing). 

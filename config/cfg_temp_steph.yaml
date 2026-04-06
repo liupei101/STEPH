@@ -13,16 +13,16 @@ remove_ckpt_after_train: True
 
 # data loading
 dataset_name: null
-path_patch: /data/UNI2-h-features/TCGA/{dataset}.lmdb
+path_patch: /data/UNI2-h-features/TCGA/{dataset}.lmdb # it is converted to lmdb; you can use original one in UNI2-h-features if convenient
 path_coord: null
-path_table: ./data_split/stratified-5foldcv/{dataset}/{dataset}_survival.csv
+path_table: ./data_split/stratified-5foldcv/{dataset}/{dataset}_survival.csv # please download it from UNI2-h-DSS
 data_mode: patch
 path_cluster: null
 feat_format: lmdb
 time_format: interval # 'origin', 'ratio', 'quantile', 'interval'
 time_bins: 32 # Keep it the same for all experiments; lead to uniform cutoffs like [0, 365*1, ..., 365*32]
 time_event_max: 11680 # Keep it the same for all experiments; lead to uniform cutoffs like [0, 365*1, ..., 365*32]
-data_split_path: ./data_split/stratified-5foldcv/{dataset}/splits_{fold}.csv
+data_split_path: ./data_split/stratified-5foldcv/{dataset}/splits_{fold}.csv # please download it from UNI2-h-DSS
 data_split_fold: [0, 1, 2, 3, 4]
 
 # network architecture
@@ -33,13 +33,13 @@ net_output_converter: sigmoid # used to convert prediction
 # network initialization with task arithmetic (task_vector = M_t - M_null)
 task_ari: True
 base_parameters_from: 'null' # null / target
-task_ari_null_ckpt_path: ./result/Null_model-abmil_gat_attn-MLE_YEAR-fold_0/train_model-last.pth
-task_ari_trg_ckpt_path: ./result/abmil_gat_attn-MLE_YEAR-data_{dataset}-fold_{fold}/train_model-last.pth
-task_ari_src_ckpt_path: ./result/abmil_gat_attn-MLE_YEAR-data_{}-fold_{}/train_model-last.pth
+task_ari_null_ckpt_path: ./result/Null_model-abmil_gat_attn-MLE_YEAR-fold_0/train_model-last.pth # see README to prepare it
+task_ari_trg_ckpt_path: ./result/abmil_gat_attn-MLE_YEAR-data_{dataset}-fold_{fold}/train_model-last.pth # see README to prepare it
+task_ari_src_ckpt_path: ./result/abmil_gat_attn-MLE_YEAR-data_{}-fold_{}/train_model-last.pth # see README to prepare it
 task_ari_src_data_split_fold: 0
 # if use multiple source models
 task_ari_src_dataset_name: 'tcga_blca-tcga_brca-tcga_cesc-tcga_coadread-tcga_gbmlgg-tcga_hnsc-tcga_kipan-tcga_lihc-tcga_lung-tcga_sarc-tcga_skcm-tcga_stes-tcga_ucec'
-task_ari_src_init_coef: '0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3'
+task_ari_src_init_coef: '0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3' # any number, no any effect
 task_ari_src_exlude_target: True
 task_ari_compute_weights: ['ADA-mixvec']
 task_ari_clamp_weights: False
@@ -64,7 +64,7 @@ deepmil_pooling: gated_attention
 loss_type: SurvMLE # use XXX-XXX-XXX to configure multi-loss
 loss_survmle_weight: 1.0
 loss_survmle_alpha: 0.5
-loss_merge_weight: AUTO_FILL # z-loss applied to merging weights; see values in Appendix
+loss_merge_weight: AUTO_FILL # 0.005/0.05; z-loss applied to merging weights; see values in Appendix
 loss_mix_weight: [0.05] # L2 loss applied to mixing weights
 
 # evaluator
