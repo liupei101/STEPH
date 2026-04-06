@@ -1,0 +1,100 @@
+# This is a template for training STEPH models
+task: sa
+cuda_id: 0
+seed: 42
+
+wandb_dir: /home/usr/STEPH
+wandb_prj: STEPH
+save_path: ./result/train_STEPH
+save_prediction: True
+eval_training_loader_per_epoch: False
+ckpt_for_eval: last # best / last
+remove_ckpt_after_train: True
+
+# data loading
+dataset_name: null
+path_patch: /data/UNI2-h-features/TCGA/{dataset}.lmdb
+path_coord: null
+path_table: ./data_split/stratified-5foldcv/{dataset}/{dataset}_survival.csv
+data_mode: patch
+path_cluster: null
+feat_format: lmdb
+time_format: interval # 'origin', 'ratio', 'quantile', 'interval'
+time_bins: 32 # Keep it the same for all experiments; lead to uniform cutoffs like [0, 365*1, ..., 365*32]
+time_event_max: 11680 # Keep it the same for all experiments; lead to uniform cutoffs like [0, 365*1, ..., 365*32]
+data_split_path: ./data_split/stratified-5foldcv/{dataset}/splits_{fold}.csv
+data_split_fold: [0, 1, 2, 3, 4]
+
+# network architecture
+arch: DeepMIL
+init_wt: False
+net_output_converter: sigmoid # used to convert prediction
+
+# network initialization with task arithmetic (task_vector = M_t - M_null)
+task_ari: True
+base_parameters_from: 'null' # null / target
+task_ari_null_ckpt_path: ./result/Null_model-abmil_gat_attn-MLE_YEAR-fold_0/train_model-last.pth
+task_ari_trg_ckpt_path: ./result/abmil_gat_attn-MLE_YEAR-data_{dataset}-fold_{fold}/train_model-last.pth
+task_ari_src_ckpt_path: ./result/abmil_gat_attn-MLE_YEAR-data_{}-fold_{}/train_model-last.pth
+task_ari_src_data_split_fold: 0
+# if use multiple source models
+task_ari_src_dataset_name: 'tcga_blca-tcga_brca-tcga_cesc-tcga_coadread-tcga_gbmlgg-tcga_hnsc-tcga_kipan-tcga_lihc-tcga_lung-tcga_sarc-tcga_skcm-tcga_stes-tcga_ucec'
+task_ari_src_init_coef: '0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3-0.3'
+task_ari_src_exlude_target: True
+task_ari_compute_weights: ['ADA-mixvec']
+task_ari_clamp_weights: False
+task_ari_param_to_merge: 'mil_encoder'
+task_ari_module_to_retrain: 'pred_head'
+task_ari_output_layer: 'relu'
+task_ari_compute_mix_weights: 'nn'
+task_ari_initial_lambda_t: null
+task_ari_topk_task_vectors: 5
+
+# DeepMIL setttings
+deepmil_network: ABMIL
+deepmil_dim_in: 1536 # UNI2h = 1536
+deepmil_dim_emb: 512
+deepmil_num_cls: 32 # should be equal to `time_bins`
+deepmil_dim_attn: 384
+deepmil_num_feat_proj_layers: 0
+deepmil_drop_rate: 0.25
+deepmil_pooling: gated_attention
+
+# training loss
+loss_type: SurvMLE # use XXX-XXX-XXX to configure multi-loss
+loss_survmle_weight: 1.0
+loss_survmle_alpha: 0.5
+loss_merge_weight: AUTO_FILL # z-loss applied to merging weights; see values in Appendix
+loss_mix_weight: [0.05] # L2 loss applied to mixing weights
+
+# evaluator
+evaluator: NLL
+evaluator_backend: default
+
+# optimizer
+opt_name: adamW
+opt_lr: 0.0001
+opt_weight_decay: 0.00001
+
+# training
+epochs: 20
+batch_size: 1
+bp_every_batch: 16
+num_workers: 4
+
+# LR Scheduler
+lrs: True
+lrs_name: cosine
+lrs_warmup_steps: -1
+lrs_warmup_epochs: 1
+
+# Early Stopping
+es: False
+es_patience: 20
+es_warmup: 0
+es_verbose: True
+es_start_epoch: 0
+monitor_metrics: loss
+
+# In a test mode
+test: False
