@@ -14,13 +14,40 @@
 *On updating. Stay tuned.*
 
 📚 Recent updates:
-- 26/04/06: Our code & training logs & model checkpoints are released
+- 26/04/06: Our code & training logs & model checkpoints have been released
 - 26/03/11: initialized a repo for STEPH
 - 26/02/20: STEPH is accepted to CVPR 2026
 
+## 👩‍💻 Running the Code
+
+### Pre-requisites
+
+All of our experiments are run on a machine with
+- two NVIDIA GeForce RTX 3090 GPUs
+- python 3.8 and pytorch==1.11.0+cu113
+
+Detailed package requirements:
+- for `pip` or `conda` users, full requirements are provided in [requirements.txt](https://github.com/liupei101/STEPH/blob/main/requirements.txt).
+- for `Docker` users, you could use our base Docker image via `docker pull yuukilp/deepath:py38-torch1.11.0-cuda11.3-cudnn8-devel` and then install additional essential python packages (see [requirements.txt](https://github.com/liupei101/STEPH/blob/main/requirements.txt)) in the container.
+
+### Training models 
+
+Use the following command to load an experiment configuration and train STEPH (5-fold cross-validation):
+```bash
+python3 main.py --config config/cfg_temp_steph.yaml --handler SATA --multi_run --cfg_dataset_name tcga_brca
+```
+
+## Training logs and model checkpoints
+
+We advocate open-source research. Our full training logs can be accessed at [Google Drive](https://drive.google.com/drive/folders/1uAqF_WVz7CkU2nFbRMJR1zWS-fY3bih7?usp=sharing). 
+
 ## UNI2-h-DSS Dataset
 
-HF Dataset (with complete DSS labels): https://huggingface.co/datasets/yuukilp/UNI2-h-DSS
+Our model evaluation is based on the `UNI2-h-DSS` dataset. `UNI2-h-DSS` is specially designed for evaluating WSI-based survival prediction models.
+
+`UNI2-h-DSS` consists of 13 cancer datasets and it provides complete DSS (disease-specific survival) labels and 5-fold balanced data splits for stable model evaluation.
+
+Please access `UNI2-h-DSS` via [HuggingFace](https://huggingface.co/datasets/yuukilp/UNI2-h-DSS).
 
 ## Acknowledgements
 
