@@ -49,7 +49,7 @@ We advocate open-source research. Our full training logs can be accessed at [Goo
 
 Our model evaluation is based on the `UNI2-h-DSS` dataset. `UNI2-h-DSS` is specially designed for evaluating WSI-based survival prediction models.
 
-`UNI2-h-DSS` consists of 13 cancer datasets and it provides complete DSS (disease-specific survival) labels and 5-fold balanced data splits for stable model evaluation.
+`UNI2-h-DSS` consists of 13 cancer datasets, and it provides complete DSS (disease-specific survival) labels and 5-fold balanced data splits for stable model evaluation.
 
 Please access `UNI2-h-DSS` via [HuggingFace](https://huggingface.co/datasets/yuukilp/UNI2-h-DSS).
 
@@ -59,6 +59,7 @@ We thank the following great works that contribute to this work:
 
 - [UNI](https://github.com/mahmoodlab/UNI): a state-of-the-art foundation model for pathology; it is used to extract patch features from WSIs.
 - [UNI2-h features](https://huggingface.co/datasets/MahmoodLab/UNI2-h-features): the datasets for this study are derived from it.
+- [UNI2-h features (full version)](https://huggingface.co/datasets/W8Yi/tcga-wsi-uni2h-features): it provides full patch images for each WSI.
 - [TCGA GDC Data portal](https://portal.gdc.cancer.gov/): it provides the source data for analysis.
 
 ## 📝 Citation
